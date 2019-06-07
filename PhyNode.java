@@ -5,10 +5,9 @@ public class PhyNode
 { 
 
 
-    private int x,y; //position of node or point of interest -- needed for UI -- will be determined in Stat
+    private int x,y; //position of node for UI -- will be determined later
     private String speciesName = null; 
     private String dna = null;
-//   private PhyNode mostRelatedSpecies = null; 
     
     private List<PhyNode> children = new ArrayList<PhyNode>(); 
     														   
@@ -60,6 +59,7 @@ public class PhyNode
 	{
 		return this.speciesName;
 	}
+	
 	/**
 	 * Iterative BFS printing all nodes using a Queue distinguishing among levels of the tree
 	 * @param node
@@ -77,7 +77,7 @@ public class PhyNode
 			{
 				oldChildrenAtLevel = currentChildrenAtLevel;
 				currentChildrenAtLevel = 0;
-				System.out.println("==========NEW LEVEL=========="); //TODO: Distinguish difference in position relative to level of the tree
+				System.out.println("==========NEW LEVEL=========="); //TODO: Distinguish difference in position(UI) relative to level of the tree
 			}		
 			PhyNode temp = q.remove();
 			oldChildrenAtLevel--;
@@ -94,10 +94,22 @@ public class PhyNode
 		
 	}
 	
+	public int numDifferences(PhyNode other)
+	{
+		int numDifs = 0;
+		for(int i = 0; i < this.dna.length(); i++)
+		{
+			if(this.dna.toCharArray()[i] != other.dna.toCharArray()[i])
+				numDifs++;
+		}
+			
+		return numDifs;
+	}
+	
 	public String toString()
 	{
 		return "Species: " + this.speciesName + 
-			   "\nDNA: "  + this.dna;
+		       "\nDNA: "  + this.dna;
 	}
 
 	/**
@@ -118,13 +130,9 @@ public class PhyNode
     	child1.addChild(grandChild2); 
     	child2.addChild(grandChild3);
     	grandChild3.addChild(greatGrandChild1);
-		printAllBFS(root);
+	printAllBFS(root);
 
     }
-    
-    //TODO: Abstract mostRelatedSpecies calculation
-
-
-
+ 
 
 }
