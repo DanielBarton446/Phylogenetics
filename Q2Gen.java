@@ -1,6 +1,6 @@
 // Author: Chris Dovolis
 //         University of Minnesota Twin Cities Professor
-// GitHub ID:
+
 
 public class Q2Gen <T> implements QGen <T> 
 {
