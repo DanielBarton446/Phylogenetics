@@ -15,15 +15,12 @@ public class PhyNode
         
     public PhyNode(String speciesName, String dna) 
     {
-    	this.x = 0; //TODO: determine where location of first Node is to be
-    	this.y = 0;    	
     	this.speciesName = speciesName;
     	this.dna = dna;
     }
     public PhyNode(String speciesName, String dna, PhyNode parent) 
     {
-    	this.x = 0; //TODO: determine where location of first Node is to be
-    	this.y = 0;    	
+    	
     	this.speciesName = speciesName;
     	this.dna = dna;
     	this.parent = parent;
@@ -60,28 +57,45 @@ public class PhyNode
 		return this.speciesName;
 	}
 	
+	public int getX() {
+		return x;
+	}
+	public void setX(int x) {
+		this.x = x;
+	}
+	public int getY() {
+		return y;
+	}
+	public void setY(int y) {
+		this.y = y;
+	}
 	/**
-	 * Iterative BFS printing all nodes using a Queue distinguishing among levels of the tree
-	 * @param node
+	 * Iterative BFS printing all nodes using a Queue distinguishing
+	 * among levels of the tree
+	 * @param root -- the root of the tree | top of the tree 
 	 */
 	
-	public static void printAllBFS(PhyNode node) 
+	public static void printAllBFS(PhyNode root) 
 	{
 		int oldChildrenAtLevel = 1; //root level size is always 1
 		int currentChildrenAtLevel = 0; 
 		Q2Gen <PhyNode> q = new Q2Gen <PhyNode>();
-		q.add(node);
+		q.add(root);
 		while(q.length() > 0)
 		{
 			if (oldChildrenAtLevel == 0)
 			{
 				oldChildrenAtLevel = currentChildrenAtLevel;
 				currentChildrenAtLevel = 0;
-				System.out.println("==========NEW LEVEL=========="); //TODO: Distinguish difference in position(UI) relative to level of the tree
+				//TODO: Distinguish difference in position(UI) relative
+				//      to level of the tree
+				System.out.println("==========NEW LEVEL=========="); 
 			}		
 			PhyNode temp = q.remove();
 			oldChildrenAtLevel--;
 			System.out.println(temp);
+			System.out.println("X: " + temp.x + " Y: " + temp.y);
+			System.out.println("Parent: " + temp.getParent());
 
 			for (PhyNode child : temp.children)
 			{
@@ -93,6 +107,16 @@ public class PhyNode
 		
 		
 	}
+	
+	/**
+	 * 
+	 * Function Assumes that the length of the DNA Strands being compared are 
+	 * the same, as that is one of the axioms.
+	 * 
+	 * @param other -- other Node to compare the number of differences in DNA
+	 * @return -- returns the number of differences between this node and other
+	 * 
+	 */
 	
 	public int numDifferences(PhyNode other)
 	{
@@ -109,7 +133,7 @@ public class PhyNode
 	public String toString()
 	{
 		return "Species: " + this.speciesName + 
-		       "\nDNA: "  + this.dna;
+			   "\nDNA: "  + this.dna;
 	}
 
 	/**
@@ -130,9 +154,10 @@ public class PhyNode
     	child1.addChild(grandChild2); 
     	child2.addChild(grandChild3);
     	grandChild3.addChild(greatGrandChild1);
-	printAllBFS(root);
+		printAllBFS(root);
 
     }
+
  
 
 }

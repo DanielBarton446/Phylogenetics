@@ -7,7 +7,9 @@ import java.util.List;
 
 public class Phylogenetics
 {
-    static List<PhyNode> children = new ArrayList<PhyNode>(); //TODO: Inefficient to use a list as many get calls occur -- represent as an array
+	//TODO: Inefficient to use a list as many get calls occur instead, 
+	//      represent as an array
+    static List<PhyNode> children = new ArrayList<PhyNode>(); 
     static PhyNode root = null;
     
     public static void main(String[] args)
@@ -17,6 +19,8 @@ public class Phylogenetics
         String filePath = sc.nextLine();
             try{
             readAndSortData(filePath);
+            JFrameGraphics.GUI();
+        	PhyNode.printAllBFS(root);
             sc.close();
             } catch(Exception e){
                 System.out.println("File Path does not exist");
@@ -25,7 +29,7 @@ public class Phylogenetics
     }
 
 
-    public static void readAndSortData(String filePath) throws Exception 
+    public static void readAndSortData(String filePath) throws Exception
     { 
         File file = new File(filePath);
 
@@ -63,25 +67,34 @@ public class Phylogenetics
      * @param children -- all other species to compare and become children or
      *                    sub-children of root
      * 
-     * Sorts the species in a tree relates the parent's child based upon
+     * Sorts the species in a tree which relates the parent's child based upon
      * the least number of differences in the DNA sequence among all other 
      * unsorted species.
      * 
+     * -> Time Complexity: O(n^3) or higher
+     * 	  TODO: Optimize time complexity
+     * 
      */
     
-    public static void sortData(PhyNode root, List<PhyNode> children) //O(n^3) or higher 
+    ///TODO: DEBUG  
+    public static void sortData(PhyNode root, List<PhyNode> children)  
     {
     	List<PhyNode> inTree = new ArrayList<PhyNode>();
     	inTree.add(root);
     	PhyNode mostRelatedParent = root;
     	int differences;
-    	int leastDifferences = root.numDifferences(children.get(0));
+    	int leastDifferences;
+    	int loop = 0;
     	
     	for(PhyNode child : children )
     	{
+    		// Resets root to be default parent
+    		leastDifferences = root.numDifferences(child);
+    		
     		for(PhyNode node : inTree)
     		{
-    			differences = child.numDifferences(node);
+    			differences = node.numDifferences(child);
+
     			if (differences < leastDifferences)
     			{
     				leastDifferences = differences;
@@ -89,13 +102,12 @@ public class Phylogenetics
     			}
     		}
     		
-    		leastDifferences = root.numDifferences(child);
+    		// Establishes Parent-Child relationship in tree
     		child.setParent(mostRelatedParent);
     		mostRelatedParent.addChild(child);
     		inTree.add(child);
     	}
     	
-    	PhyNode.printAllBFS(root);
     }
     
     

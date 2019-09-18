@@ -1,7 +1,3 @@
-// Author: Chris Dovolis
-//         University of Minnesota Twin Cities Professor
-
-
 public interface QGen <T> 
 {
 
